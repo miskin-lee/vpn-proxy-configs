@@ -7,26 +7,20 @@ function main(config) {
     return config;
   }
 
-  config.ipv6 = false;
-
-  config.dns = {
-    ...(config.dns || {}),
-    enable: true,
-    nameserver: [
-      "223.5.5.5",
-      "119.29.29.29",
-      "8.8.8.8",
-      "114.114.114.114"
-    ]
-  };
-
   config.rules = [
+    // 局域网直连
     "IP-CIDR,192.168.0.0/16,DIRECT,no-resolve",
     "IP-CIDR,10.0.0.0/8,DIRECT,no-resolve",
     "IP-CIDR,172.16.0.0/12,DIRECT,no-resolve",
     "IP-CIDR,127.0.0.0/8,DIRECT,no-resolve",
+
+    // .cn 域名直连
+    "DOMAIN-SUFFIX,cn,DIRECT",
     "GEOSITE,cn,DIRECT",
+    // 中国 IP 直连
     "GEOIP,CN,DIRECT,no-resolve",
+
+    // 其他全部走你选中的代理组
     "MATCH," + proxy
   ];
 
